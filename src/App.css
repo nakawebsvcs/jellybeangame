@@ -19,6 +19,10 @@ h2 {
     margin-bottom: 15px;
 }
 
+.instructions {
+    background-color: white;
+}
+
 .info {
     font-family: Arial, sans-serif;
     color: black;
@@ -28,10 +32,10 @@ h2 {
 }
 
 .container {
-    width: 90%;
+    width: 80%;
     max-width: 1400px;
     margin: 20px auto;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.75);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -220,9 +224,18 @@ footer {
     margin: 40px 0 20px;
     font-size: 14px;
     color: #666;
+    background-color: white;
     padding-top: 20px;
+    padding-bottom: 20px;
     border-top: 1px solid #eee;
     line-height: 1.6;
+}
+
+.footer-link {
+  color: inherit;
+  font-size: inherit;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .btn {

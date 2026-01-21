@@ -405,7 +405,15 @@ function App() {
       </main>
 
       <footer>
-        Developed for the web by Jessica Nakamura
+        Developed for the web by{" "}
+        <a
+          href="https://nakamurawebservices.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="footer-link"
+        >
+          Nakamura Web Services
+        </a>
         <br />
         REFERENCES: Parker, L. (n.d.) The Bean Game. Washington State University
       </footer>
