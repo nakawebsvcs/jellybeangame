@@ -51,7 +51,7 @@ const GameHeader = ({ jellybeans, currentRound, gameStarted, onStartGame }) => {
             id="jellybean-counter"
             className={jellybeans <= 5 ? "jellybean-counter-low" : ""}
           >
-            {currentRound === 2
+            {currentRound === 2 || currentRound === 3
               ? `Jellybeans on board: ${jellybeans}`
               : `Jellybeans left: ${jellybeans}`}
           </div>

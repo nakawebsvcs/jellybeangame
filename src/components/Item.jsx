@@ -2,15 +2,18 @@ import React from "react";
 
 const Item = ({ item, itemState, onBeanClick, currentRound }) => {
   const handleCheckboxChange = () => {
-    onBeanClick(item.id);
+    onBeanClick(item.id, 0); // For checkboxes, we pass 0 as squareIndex
   };
 
   // Determine if this item is partially paid
-  const isPartiallyPaid =
-    item.cost > 0 &&
-    !item.isCheckbox &&
-    itemState.placed > 0 &&
-    itemState.placed < item.cost;
+  const isPartiallyPaid = () => {
+    if (item.cost === 0 || item.isCheckbox) return false;
+
+    const filledCount = itemState.filledSquares.filter(Boolean).length;
+    return filledCount > 0 && filledCount < item.cost;
+  };
+
+  const partiallyPaid = isPartiallyPaid();
 
   // Render checkbox for 0-cost items
   if (item.cost === 0 || item.isCheckbox) {
@@ -36,24 +39,22 @@ const Item = ({ item, itemState, onBeanClick, currentRound }) => {
 
   // Render squares for items with cost
   return (
-    <div className={`item ${isPartiallyPaid ? "partial-payment" : ""}`}>
+    <div className={`item ${partiallyPaid ? "partial-payment" : ""}`}>
       <div className="item-name">
         {item.name}
-        {isPartiallyPaid && (
+        {partiallyPaid && (
           <span className="partial-warning"> ⚠ Partial payment</span>
         )}
       </div>
       <div className="squares-container">
-        {Array.from({ length: item.cost }).map((_, index) => {
-          const isFilled = index < itemState.placed;
-          const isPartial = isPartiallyPaid && isFilled;
+        {itemState.filledSquares.map((isFilled, index) => {
           return (
             <div
               key={index}
               className={`square ${isFilled ? "selected" : ""} ${
-                isPartial ? "partial" : ""
+                partiallyPaid && isFilled ? "partial" : ""
               }`}
-              onClick={() => onBeanClick(item.id)}
+              onClick={() => onBeanClick(item.id, index)}
               title={`${item.name} - ${index + 1}/${item.cost}`}
             />
           );

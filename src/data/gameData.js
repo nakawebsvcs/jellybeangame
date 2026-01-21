@@ -214,14 +214,14 @@ export const ROUNDS = {
   3: {
     beans: 13,
     message:
-      "Round 3: Someone in your family broke their leg. :( If you do not have insurance, remove 3 jellybeans.",
+      "Round 3: Someone in your family broke their leg. ☹️ If you do not have insurance, remove 3 jellybeans.",
     canAdd: true,
     canRemove: true,
   },
   4: {
     beans: 15,
     message:
-      "Round 4: You have received a raise of 2 jellybeans! Spend them to finish the game.",
+      "Final Round: You have received a raise of 2 jellybeans! Spend them to finish the game.",
     canAdd: true,
     canRemove: true,
   },

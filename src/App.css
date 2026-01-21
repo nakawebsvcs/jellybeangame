@@ -28,7 +28,7 @@ h2 {
     color: black;
     font-size: 18px;
     line-height: 1.4;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 .container {
@@ -68,19 +68,53 @@ h2 {
   justify-content: center;
   align-items: center;
   z-index: 2000;
+  cursor: pointer;
+  animation: fadeIn 0.3s ease-out;
 }
 
 #alert-message {
   color: red;
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: bold;
   text-align: center;
-  margin: 0;
-  padding: 30px;
-  background-color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 20px 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+
+.alert-content {
+  background-color: rgba(255, 255, 255, 0.98);
   border-radius: 15px;
   border: 3px solid red;
   box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+  padding: 30px;
+  max-width: 80%;
+  min-width: 300px;
+  text-align: center;
+  cursor: default; /* Don't change cursor inside content */
+}
+
+.alert-close-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.alert-close-btn:hover {
+  background-color: #3d8b40;
+}
+
+.alert-close-btn:active {
+  transform: scale(0.95);
 }
 
 #jellybean-counter {
@@ -388,10 +422,19 @@ input[type="checkbox"] {
         margin: 10px auto;
     }
     
-    #alert-message {
-        font-size: 2rem;
-        padding: 20px;
-    }
+    .alert-content {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  #alert-message {
+    font-size: 1.5rem;
+  }
+  
+  .alert-close-btn {
+    padding: 8px 25px;
+    font-size: 1.1rem;
+  }
     
     .counter-container {
         position: static;
@@ -413,4 +456,12 @@ input[type="checkbox"] {
     .info {
         font-size: 16px;
     }
+    
+    #alert-message {
+    font-size: 1.2rem;
+  }
+  
+  .alert-content {
+    padding: 15px;
+  }
 }
