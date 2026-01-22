@@ -535,11 +535,15 @@ function App() {
       setCurrentRound(4);
       showGameAlert(
         "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!",
+        "", // No section title
+        "", // No section content
         "instruction"
       );
     } else if (currentRound === 4) {
       showGameAlert(
         "Congratulations! You have completed the game by\nsuccessfully budgeting through life's ups and downs.\nClick OK to play again.",
+        "", // No section title
+        "", // No section content
         "instruction"
       );
     }
@@ -759,6 +763,8 @@ function App() {
                   setTimeout(() => {
                     showGameAlert(
                       "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!",
+                      "", // No section title
+                      "", // No section content
                       "instruction"
                     );
                   }, 300);
