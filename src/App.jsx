@@ -110,6 +110,11 @@ function App() {
 
     console.log(`Round ${currentRound}: placed=${placed}`);
 
+    // Clear temp status when entering Round 4
+    if (currentRound === 4) {
+      setTempStatusMessage("");
+    }
+
     if (currentRound === 2 || currentRound === 3) {
       setJellybeans(placed);
     } else if (currentRound === 4) {
@@ -125,57 +130,74 @@ function App() {
   }, [boardState, currentRound]);
 
   // Temporary status when Round 2 reaches exactly 13 beans
-useEffect(() => {
-  console.log("Round 2 alert useEffect running", { currentRound, gameStarted });
-  
-  if (currentRound === 2 && gameStarted) {
-    const placed = calculateTotalPlaced();
-    console.log("Round 2 - placed beans:", placed);
-    
-    if (placed === 13) {
-      console.log("SHOWING TEMP STATUS: 13 beans reached!");
-      setTempStatusMessage('You have 13 jellybeans! Click "Finish Round" to move on.');
-      
-      // Clear message after 3 seconds
-      const timer = setTimeout(() => {
-        console.log("Clearing temp status after 3 seconds");
-        setTempStatusMessage("");
-      }, 3000);
-      
-      return () => clearTimeout(timer);
-    } else {
-      console.log("Clearing temp status - not at 13 beans");
-      setTempStatusMessage("");
+  useEffect(() => {
+    // Only run in Round 2
+    if (currentRound !== 2) return;
+
+    console.log("🎯 ROUND 2 STATUS useEffect - GameStarted:", gameStarted);
+
+    if (gameStarted) {
+      const placed = calculateTotalPlaced();
+      console.log("🎯 Round 2 - placed beans:", placed);
+
+      if (placed === 13) {
+        console.log("🎯 SETTING ROUND 2 TEMP STATUS");
+        // Functional update to ensure we're setting it
+        setTempStatusMessage((prev) => {
+          const newMessage =
+            'You have 13 jellybeans! Click "Finish Round" to move on.';
+          console.log(
+            "🎯 setTempStatusMessage - Previous:",
+            prev,
+            "New:",
+            newMessage
+          );
+          return newMessage;
+        });
+
+        // Clear message after 3 seconds
+        const timer = setTimeout(() => {
+          console.log("🎯 Clearing Round 2 temp status after timeout");
+          setTempStatusMessage("");
+        }, 3000);
+
+        return () => {
+          console.log("🎯 Cleaning up Round 2 timer");
+          clearTimeout(timer);
+        };
+      }
     }
-  } else {
-    console.log("Clearing temp status - not in Round 2 or game not started");
-    setTempStatusMessage("");
-  }
-}, [boardState, currentRound, gameStarted]);
+    // NO else blocks - don't clear here!
+  }, [boardState, currentRound, gameStarted]);
 
   // Temporary status when Round 3 reaches exactly 10 beans (no insurance)
   useEffect(() => {
-    if (currentRound === 3 && gameStarted && !hasHealthInsurance()) {
+    // Only run in Round 3
+    if (currentRound !== 3) return;
+
+    if (gameStarted && !hasHealthInsurance()) {
       const placed = calculateTotalPlaced();
 
       if (placed === 10) {
+        console.log("🎯 SETTING ROUND 3 TEMP STATUS");
         setTempStatusMessage(
           'You have 10 jellybeans! Click "Finish Round" to move on.'
         );
 
         // Clear message after 3 seconds
         const timer = setTimeout(() => {
+          console.log("🎯 Clearing Round 3 temp status after timeout");
           setTempStatusMessage("");
         }, 3000);
 
-        return () => clearTimeout(timer);
-      } else {
-        // Clear message if count changes
-        setTempStatusMessage("");
+        return () => {
+          console.log("🎯 Cleaning up Round 3 timer");
+          clearTimeout(timer);
+        };
       }
-    } else {
-      setTempStatusMessage(""); // Clear when not in Round 3 without insurance
+      // NO else block - don't clear when not at 10!
     }
+    // NO else block for round/game started check!
   }, [boardState, currentRound, gameStarted]);
 
   // Alert when Round 3 starts - CONDITIONAL BASED ON INSURANCE
@@ -432,7 +454,7 @@ useEffect(() => {
       );
     } else if (currentRound === 4) {
       showGameAlert(
-        "Congratulations! You have completed the game by successfully budgeting through life's ups and downs!\nClick OK to play again."
+        "Congratulations! You have completed the game by\nsuccessfully budgeting through life's ups and downs.\nClick OK to play again."
       );
     }
   };
@@ -641,16 +663,17 @@ useEffect(() => {
             hasHealthInsurance() &&
             alertData.message.includes("Luckily, you have health insurance")
               ? () => {
-                  console.log(
-                    "Advancing from Round 3 to Round 4 via special action"
+                console.log(
+                  "Advancing from Round 3 to Round 4 via special action"
+                );
+              //  setTempStatusMessage(""); // Clear temp status
+                setCurrentRound(4);
+                setTimeout(() => {
+                  showGameAlert(
+                    "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!"
                   );
-                  setCurrentRound(4);
-                  setTimeout(() => {
-                    showGameAlert(
-                      "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!"
-                    );
-                  }, 300);
-                }
+                }, 300);
+              }
               : currentRound === 4 &&
                 alertData.message.includes("Congratulations")
               ? resetGame
