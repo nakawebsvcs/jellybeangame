@@ -1,6 +1,11 @@
+/* Ensure proper sticky behavior */
+html {
+    height: 100%;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-image: url('/assets/jellybean-bg.jpg');
+    background-image: url('/assets/jellybean-bg.png');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -21,6 +26,7 @@ h2 {
 
 .instructions {
     background-color: white;
+    padding: 1rem 0;
 }
 
 .info {
@@ -39,6 +45,11 @@ h2 {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Sticky wrapper for counter - only on mobile */
+.sticky-counter-wrapper {
+    /* Default: not sticky on desktop */
 }
 
 .counter-container {
@@ -157,38 +168,46 @@ h2 {
     font-weight: bold;
 }
 
- .temp-status-message {
-  position: fixed;
-  top: 90px;  /* Below the counter */
-  right: 20px;
-  background-color: white;
-  color: black;
-  padding: 1.5rem 2rem;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: bold;
-  z-index: 999;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  animation: slideIn 0.5s ease-out;
-  max-width: 300px;
-  text-align: center;
-  line-height: 1.4;
-  border: 2px solid #4caf50;
-} 
+/* DESKTOP ONLY: temp status message styles */
+@media (min-width: 769px) {
+  .temp-status-message {
+    position: fixed;
+    top: 90px;  /* Below the counter */
+    right: 20px;
+    background-color: white;
+    color: black;
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    animation: slideIn 0.5s ease-out;
+    max-width: 300px;
+    text-align: center;
+    line-height: 1.4;
+    border: 2px solid #4caf50;
+  } 
 
+  .temp-status-message::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 30px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #4caf50;
+  }
 
-.temp-status-message::after {
-  content: '';
-  position: absolute;
-  top: -8px;
-  right: 30px;
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid #4caf50;
+  /* Optional: Add fade-out when disappearing */
+  .temp-status-message.fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+  }
 }
 
+/* Keep the @keyframes outside media queries since they're just definitions */
 @keyframes slideIn {
   from { 
     opacity: 0; 
@@ -198,11 +217,6 @@ h2 {
     opacity: 1; 
     transform: translateY(0); 
   }
-}
-
-/* Optional: Add fade-out when disappearing */
-.temp-status-message.fade-out {
-  animation: fadeOut 0.5s ease-out forwards;
 }
 
 @keyframes fadeOut {
@@ -483,33 +497,108 @@ input[type="checkbox"] {
 }
 
 @media (max-width: 768px) {
-    .gameboard {
-        grid-template-columns: 1fr;
+    /* Keep these essential layout styles */
+    body {
+        overflow-x: hidden;
     }
     
     .container {
-        width: 95%;
-        margin: 10px auto;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    
+    .gameboard {
+        grid-template-columns: 1fr;
+        gap: 15px;
     }
     
     .alert-content {
-    padding: 20px;
-    margin: 10px;
-  }
-  
-  #alert-message {
-    font-size: 1.5rem;
-  }
-  
-  .alert-close-btn {
-    padding: 8px 25px;
-    font-size: 1.1rem;
-  }
+        padding: 20px;
+        margin: 10px;
+        max-width: 95%;
+        min-width: 250px;
+    }
     
+    #alert-message {
+        font-size: 1.5rem;
+    }
+    
+    .alert-close-btn {
+        padding: 8px 25px;
+        font-size: 1.1rem;
+    }
+    
+    /* Header - normal flow */
+    header {
+        position: relative;
+        margin: 0 0 10px 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #eee;
+    }
+    
+    /* Counter container - Override desktop fixed positioning */
     .counter-container {
-        position: static;
-        margin: 20px auto;
-        width: fit-content;
+        position: relative !important; /* Need !important to override desktop fixed */
+        top: auto !important;
+        right: auto !important;
+        margin: 0 auto !important; /* Center it */
+        width: 95% !important;
+        max-width: 400px !important;
+        padding: 12px 15px !important;
+        border: 2px solid #ccc !important;
+        border-radius: 10px !important;
+        background-color: white !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Sticky wrapper - just basic styling */
+    .sticky-counter-wrapper {
+        position: relative;
+        padding: 8px 0;
+        margin: 10px 0 5px 0;
+    }
+    
+    /* Temp message - NO animation on mobile */
+    .temp-status-message {
+        position: absolute;
+        top: calc(100% + 5px);
+        left: 50%;
+        transform: translateX(-50%);
+        width: 95%;
+        max-width: 380px;
+        z-index: 1001;
+        font-size: 0.9rem;
+        padding: 10px 15px;
+        background-color: white;
+        color: black;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        border: 2px solid #4caf50;
+        text-align: center;
+        line-height: 1.4;
+        animation: none !important; /* NO animation on mobile */
+    }
+    
+    .temp-status-message::after {
+        display: none;
+    }
+    
+    /* Adjust instructions spacing */
+    .instructions {
+        margin-bottom: 5px;
+    }
+    
+    /* Ensure Start Game button has proper spacing */
+    #start-game {
+        margin: 10px 0;
+        padding: 10px 20px;
     }
 }
 
@@ -525,13 +614,32 @@ input[type="checkbox"] {
     
     .info {
         font-size: 16px;
+        margin: 6px 0;
     }
     
     #alert-message {
-    font-size: 1.2rem;
-  }
-  
-  .alert-content {
-    padding: 15px;
-  }
+        font-size: 1.2rem;
+    }
+    
+    .alert-content {
+        padding: 15px;
+    }
+    
+    .counter-container {
+        padding: 10px 12px !important;
+        gap: 8px !important;
+    }
+    
+    #jellybean-counter {
+        font-size: 1.4em;
+    }
+    
+    .sticky-counter-wrapper {
+        padding: 6px 0;
+    }
+    
+    .temp-status-message {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
 }

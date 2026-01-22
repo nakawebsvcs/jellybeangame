@@ -200,6 +200,85 @@ function App() {
     // NO else block for round/game started check!
   }, [boardState, currentRound, gameStarted]);
 
+  // === STICKY COUNTER useEffect ===
+  // Alternative: Improved scroll-based version
+  useEffect(() => {
+    let lastScrollTop = 0;
+    let ticking = false;
+
+    const makeCounterSticky = () => {
+      if (window.innerWidth > 768 || !gameStarted) return;
+
+      const counterContainer = document.querySelector(".counter-container");
+      const stickyWrapper = document.querySelector(".sticky-counter-wrapper");
+
+      if (!counterContainer || !stickyWrapper) return;
+
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const direction = scrollTop > lastScrollTop ? "down" : "up";
+      lastScrollTop = scrollTop;
+
+      // Get the position relative to viewport
+      const wrapperRect = stickyWrapper.getBoundingClientRect();
+
+      // Trigger when counter is about to leave viewport (when top is less than 0)
+      if (wrapperRect.top < 0 && direction === "down") {
+        // Going down and counter is leaving viewport
+        stickyWrapper.style.position = "fixed";
+        stickyWrapper.style.top = "0";
+        stickyWrapper.style.left = "0";
+        stickyWrapper.style.right = "0";
+        stickyWrapper.style.zIndex = "1000";
+        stickyWrapper.style.background = "white";
+        stickyWrapper.style.padding = "10px 0";
+        stickyWrapper.style.boxShadow = "0 3px 10px rgba(0, 0, 0, 0.1)";
+        stickyWrapper.style.transition =
+          "transform 0.3s ease, box-shadow 0.3s ease";
+
+        counterContainer.style.width = "95%";
+        counterContainer.style.margin = "0 auto";
+        counterContainer.style.maxWidth = "400px";
+      } else if (scrollTop < 100 && direction === "up") {
+        // Going up and near top of page
+        stickyWrapper.style.position = "";
+        stickyWrapper.style.top = "";
+        stickyWrapper.style.left = "";
+        stickyWrapper.style.right = "";
+        stickyWrapper.style.zIndex = "";
+        stickyWrapper.style.background = "";
+        stickyWrapper.style.padding = "";
+        stickyWrapper.style.boxShadow = "";
+        stickyWrapper.style.transition = "";
+
+        counterContainer.style.width = "";
+        counterContainer.style.margin = "";
+        counterContainer.style.maxWidth = "";
+      }
+    };
+
+    const scrollHandler = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          makeCounterSticky();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    if (window.innerWidth <= 768 && gameStarted) {
+      window.addEventListener("scroll", scrollHandler, { passive: true });
+
+      // Initial check
+      makeCounterSticky();
+
+      return () => {
+        window.removeEventListener("scroll", scrollHandler);
+      };
+    }
+  }, [gameStarted]);
+
   // Alert when Round 3 starts - CONDITIONAL BASED ON INSURANCE
   useEffect(() => {
     if (currentRound === 3 && gameStarted) {
@@ -663,17 +742,17 @@ function App() {
             hasHealthInsurance() &&
             alertData.message.includes("Luckily, you have health insurance")
               ? () => {
-                console.log(
-                  "Advancing from Round 3 to Round 4 via special action"
-                );
-              //  setTempStatusMessage(""); // Clear temp status
-                setCurrentRound(4);
-                setTimeout(() => {
-                  showGameAlert(
-                    "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!"
+                  console.log(
+                    "Advancing from Round 3 to Round 4 via special action"
                   );
-                }, 300);
-              }
+                  //  setTempStatusMessage(""); // Clear temp status
+                  setCurrentRound(4);
+                  setTimeout(() => {
+                    showGameAlert(
+                      "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!"
+                    );
+                  }, 300);
+                }
               : currentRound === 4 &&
                 alertData.message.includes("Congratulations")
               ? resetGame

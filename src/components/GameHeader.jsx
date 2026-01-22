@@ -24,7 +24,7 @@ const GameHeader = ({
           Click again to remove a jellybean and spend it somewhere else.
         </p>
         <p className="info">
-          You must pay for at least one item in each{" "}
+          You must choose at least one item in each{" "}
           <span style={{ color: "red" }}>
             <strong>required </strong>
           </span>
@@ -50,24 +50,26 @@ const GameHeader = ({
 
       {/* Only show counter when game has started */}
       {gameStarted && (
-        <div className="counter-container">
-          <div id="jellybean">
-            <img src="/assets/red-bean.png" width="40px" alt="Jellybean" />
+        <div className="sticky-counter-wrapper">
+          <div className="counter-container">
+            <div id="jellybean">
+              <img src="/assets/red-bean.png" width="40px" alt="Jellybean" />
+            </div>
+            <div
+              id="jellybean-counter"
+              className={jellybeans <= 5 ? "jellybean-counter-low" : ""}
+            >
+              {currentRound === 2 || currentRound === 3
+                ? `Jellybeans on board: ${jellybeans}`
+                : `Jellybeans left: ${jellybeans}`}
+            </div>
           </div>
-          <div
-            id="jellybean-counter"
-            className={jellybeans <= 5 ? "jellybean-counter-low" : ""}
-          >
-            {currentRound === 2 || currentRound === 3
-              ? `Jellybeans on board: ${jellybeans}`
-              : `Jellybeans left: ${jellybeans}`}
-          </div>
-        </div>
-      )}
 
-      {/* Temporary status message - only shows when tempStatusMessage exists */}
-      {tempStatusMessage && gameStarted && (
-        <div className="temp-status-message">{tempStatusMessage}</div>
+          {/* Temporary status message */}
+          {tempStatusMessage && gameStarted && (
+            <div className="temp-status-message">{tempStatusMessage}</div>
+          )}
+        </div>
       )}
     </header>
   );
