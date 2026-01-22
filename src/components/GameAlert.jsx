@@ -6,6 +6,7 @@ const GameAlert = ({
   specialAction,
   sectionTitle,
   sectionContent,
+  type = "warning"
 }) => {
   // Close on Escape key
   useEffect(() => {
@@ -47,7 +48,13 @@ const GameAlert = ({
 
         {/* Main Message (round instructions) - Shows at BOTTOM */}
         {message && (
-          <p id="alert-message" style={{ whiteSpace: "pre-line" }}>
+          <p
+            id="alert-message"
+            style={{
+              whiteSpace: "pre-line",
+              color: type === "instruction" ? "blue" : "red",
+            }}
+          >
             {message}
           </p>
         )}

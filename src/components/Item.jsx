@@ -21,7 +21,7 @@ const Item = ({ item, itemState, onBeanClick, currentRound }) => {
       <div className="item">
         <div className="item-name">{item.name}</div>
         <div className="checkbox-container">
-          <div className="no-cost-text">No cost</div>
+          <div className="no-cost-text">NO COST</div>
           <label className="checkbox-label">
             <input
               type="checkbox"

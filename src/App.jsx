@@ -46,11 +46,12 @@ function App() {
   });
 
   // Show alert message with optional sections
-  const showGameAlert = (message, sectionTitle, sectionContent) => {
+  const showGameAlert = (message, sectionTitle, sectionContent, type = "warning") => {
     setAlertData({
       message: message || "",
       sectionTitle: sectionTitle || "",
       sectionContent: sectionContent || "",
+      type: type
     });
     setShowAlert(true);
   };
@@ -74,6 +75,7 @@ function App() {
       message: "",
       sectionTitle: "",
       sectionContent: "",
+      type: "warning"
     });
 
     // Re-initialize board state to initial state
@@ -287,13 +289,15 @@ function App() {
           showGameAlert(
             "Round 3: Someone in your family broke their leg. ☹️\nLuckily, you have health insurance!\nClick 'OK' to continue to Round 4.",
             "Things to Think About",
-            ROUNDS[3].sectionContent
+            ROUNDS[3].sectionContent,
+            "instruction"
           );
         } else {
           showGameAlert(
             "Round 3: Someone in your family broke their leg. ☹️\nYou do not have insurance; remove 3 jellybeans.",
             "Things to Think About",
-            ROUNDS[3].sectionContent
+            ROUNDS[3].sectionContent,
+            "instruction"
           );
         }
       }, 100);
@@ -518,7 +522,8 @@ function App() {
       showGameAlert(
         ROUNDS[2].message,
         ROUNDS[2].sectionTitle,
-        ROUNDS[2].sectionContent
+        ROUNDS[2].sectionContent,
+        "instruction"
       );
     } else if (currentRound === 2) {
       setCurrentRound(3);
@@ -529,11 +534,13 @@ function App() {
       // (With insurance, specialAction handles advancement)
       setCurrentRound(4);
       showGameAlert(
-        "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!"
+        "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!",
+        "instruction"
       );
     } else if (currentRound === 4) {
       showGameAlert(
-        "Congratulations! You have completed the game by\nsuccessfully budgeting through life's ups and downs.\nClick OK to play again."
+        "Congratulations! You have completed the game by\nsuccessfully budgeting through life's ups and downs.\nClick OK to play again.",
+        "instruction"
       );
     }
   };
@@ -678,7 +685,8 @@ function App() {
       showGameAlert(
         ROUNDS[1].message,
         ROUNDS[1].sectionTitle,
-        ROUNDS[1].sectionContent
+        ROUNDS[1].sectionContent,
+        "instruction"
       );
     }
   };
@@ -736,6 +744,7 @@ function App() {
           message={alertData.message}
           sectionTitle={alertData.sectionTitle}
           sectionContent={alertData.sectionContent}
+          type={alertData.type}
           onClose={() => setShowAlert(false)}
           specialAction={
             currentRound === 3 &&
@@ -749,7 +758,8 @@ function App() {
                   setCurrentRound(4);
                   setTimeout(() => {
                     showGameAlert(
-                      "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!"
+                      "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!",
+                      "instruction"
                     );
                   }, 300);
                 }

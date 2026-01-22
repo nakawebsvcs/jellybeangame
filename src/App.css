@@ -135,7 +135,7 @@ h2 {
 }
 
 .section-title {
-  color: #86678c;
+  color: #501c59;
   font-size: 1.3rem;
   margin-bottom: 15px;
   text-align: center;
@@ -178,7 +178,7 @@ h2 {
     color: black;
     padding: 1.5rem 2rem;
     border-radius: 8px;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: bold;
     z-index: 999;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
@@ -286,7 +286,7 @@ main {
 }
 
 .item-name {
-    font-size: 16px;
+    font-size: 1rem;
     margin-bottom: 10px;
     color: #333;
 }
@@ -417,7 +417,7 @@ footer {
 .no-cost-text {
   font-weight: bold;
   color: #333;
-  font-size: 16px;
+  font-size: 1.2rem;
 }
 
 /* Custom checkbox styling */
@@ -514,6 +514,14 @@ input[type="checkbox"] {
         grid-template-columns: 1fr;
         gap: 15px;
     }
+
+    .item-name {
+      font-size: 1.2rem;
+    }
+
+    .no-cost-text {
+      font-size: 1.2rem;
+    }
     
     .alert-content {
         padding: 20px;
@@ -574,7 +582,7 @@ input[type="checkbox"] {
         width: 95%;
         max-width: 380px;
         z-index: 1001;
-        font-size: 0.9rem;
+        font-size: 1.2rem;
         padding: 10px 15px;
         background-color: white;
         color: black;
@@ -616,6 +624,14 @@ input[type="checkbox"] {
         font-size: 16px;
         margin: 6px 0;
     }
+
+    .item-name {
+      font-size: 1.3rem;
+    }
+
+     .no-cost-text {
+      font-size: 1.2rem;
+    }
     
     #alert-message {
         font-size: 1.2rem;
@@ -639,7 +655,7 @@ input[type="checkbox"] {
     }
     
     .temp-status-message {
-        font-size: 0.85rem;
+        font-size: 1.2rem;
         padding: 8px 12px;
     }
 }
