@@ -557,12 +557,16 @@ function App() {
           Nakamura Web Services
         </a>
         <br />
+        <br />
         REFERENCES: Parker, L. (n.d.) The Bean Game. Washington State University
         Extension, Family Resource Management Specialist.
         <br /> Office of State Treasurer John Perdue. (n.d.). The Budget Game:
         Living on a 20 Square Salary. Financial Education Programs, Charleston,
         WV. <br />
         Jana Darrington, M.S. (n.d.) Utah State University Extension
+        <br />
+        <br />
+        For educational purposes • Not for commercial distribution
       </footer>
 
       {showAlert && (
