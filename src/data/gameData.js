@@ -207,7 +207,7 @@ export const ROUNDS = {
   2: {
     beans: 13,
     message:
-      "Round 2: Your income has been cut to 13 jellybeans! Remove 7 jellybeans to continue.",
+      "Round 2: Your income has been cut to 13 jellybeans!\nRemove 7 jellybeans to continue.",
     canAdd: true,
     canRemove: true,
   },

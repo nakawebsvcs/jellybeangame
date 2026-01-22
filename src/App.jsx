@@ -51,7 +51,7 @@ function App() {
     // Scroll to top of page
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // You can remove 'behavior: 'smooth'' for instant scroll
+   //   behavior: "smooth",
     });
 
     // Reset all state to initial values
@@ -61,7 +61,7 @@ function App() {
     setShowAlert(false);
     setAlertMessage("");
 
-    // Re-initialize board state exactly like the initial state
+    // Re-initialize board state to initial state
     const initialState = {};
     CATEGORIES.forEach((category) => {
       category.items.forEach((item) => {
@@ -124,7 +124,7 @@ function App() {
     }
   }, [boardState, currentRound, gameStarted]);
 
-  // Alert when Round 3 reaches exactly 10 beans (no insurance scenario)
+  // Alert when Round 3 reaches exactly 10 beans (no insurance condition)
   useEffect(() => {
     if (currentRound === 3 && gameStarted && !hasHealthInsurance()) {
       const placed = calculateTotalPlaced();
@@ -145,11 +145,11 @@ function App() {
       const timer = setTimeout(() => {
         if (hasHealthInsurance()) {
           showGameAlert(
-            "Round 3: Someone in your family broke their leg. ☹️ Luckily, you have health insurance! Click 'OK' to continue to Round 4."
+            "Round 3: Someone in your family broke their leg. ☹️\nLuckily, you have health insurance!\nClick 'OK' to continue to Round 4."
           );
         } else {
           showGameAlert(
-            "Round 3: Someone in your family broke their leg. ☹️ You do not have insurance; remove 3 jellybeans."
+            "Round 3: Someone in your family broke their leg. ☹️\nYou do not have insurance; remove 3 jellybeans."
           );
         }
       }, 100);
@@ -378,7 +378,7 @@ function App() {
       // (With insurance, specialAction handles advancement)
       setCurrentRound(4);
       showGameAlert(
-        "Final Round: You've received a raise of 2 jellybeans! Spend your beans wisely!"
+        "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!"
       );
     } else if (currentRound === 4) {
       showGameAlert(
@@ -584,7 +584,7 @@ function App() {
                   setCurrentRound(4);
                   setTimeout(() => {
                     showGameAlert(
-                      "Final Round: You've received a raise of 2 jellybeans! Spend your beans wisely!"
+                      "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!"
                     );
                   }, 300);
                 }

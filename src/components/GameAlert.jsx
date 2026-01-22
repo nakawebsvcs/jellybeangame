@@ -31,7 +31,9 @@ const GameAlert = ({ message, onClose, specialAction }) => {
   return (
     <div id="alert-overlay" onClick={handleClose}>
       <div className="alert-content" onClick={(e) => e.stopPropagation()}>
-        <p id="alert-message">{message}</p>
+        <p id="alert-message" style={{ whiteSpace: "pre-line" }}>
+          {message}
+        </p>
         <button
           className="alert-close-btn"
           onClick={handleClose}
