@@ -19,8 +19,15 @@ function App() {
   const [currentRound, setCurrentRound] = useState(1);
   const [jellybeans, setJellybeans] = useState(ROUNDS[1].beans);
   const [gameStarted, setGameStarted] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [tempStatusMessage, setTempStatusMessage] = useState("");
+
+  // Alert data state (stores message, sectionTitle, sectionContent)
+  const [alertData, setAlertData] = useState({
+    message: "",
+    sectionTitle: "",
+    sectionContent: "",
+  });
 
   // Initialize board state
   const [boardState, setBoardState] = useState(() => {
@@ -38,9 +45,13 @@ function App() {
     return initialState;
   });
 
-  // Show alert message
-  const showGameAlert = (message) => {
-    setAlertMessage(message);
+  // Show alert message with optional sections
+  const showGameAlert = (message, sectionTitle, sectionContent) => {
+    setAlertData({
+      message: message || "",
+      sectionTitle: sectionTitle || "",
+      sectionContent: sectionContent || "",
+    });
     setShowAlert(true);
   };
 
@@ -51,7 +62,7 @@ function App() {
     // Scroll to top of page
     window.scrollTo({
       top: 0,
-   //   behavior: "smooth",
+      behavior: "smooth",
     });
 
     // Reset all state to initial values
@@ -59,7 +70,11 @@ function App() {
     setJellybeans(ROUNDS[1].beans);
     setGameStarted(false);
     setShowAlert(false);
-    setAlertMessage("");
+    setAlertData({
+      message: "",
+      sectionTitle: "",
+      sectionContent: "",
+    });
 
     // Re-initialize board state to initial state
     const initialState = {};
@@ -109,33 +124,57 @@ function App() {
     }
   }, [boardState, currentRound]);
 
-  // Alert when Round 2 reaches exactly 13 beans
-  useEffect(() => {
-    if (currentRound === 2 && gameStarted) {
-      const placed = calculateTotalPlaced();
-      if (placed === 13) {
-        const timer = setTimeout(() => {
-          showGameAlert(
-            'You have 13 jellybeans. Click "Finish Round" to move on.'
-          );
-        }, 100);
-        return () => clearTimeout(timer);
-      }
+  // Temporary status when Round 2 reaches exactly 13 beans
+useEffect(() => {
+  console.log("Round 2 alert useEffect running", { currentRound, gameStarted });
+  
+  if (currentRound === 2 && gameStarted) {
+    const placed = calculateTotalPlaced();
+    console.log("Round 2 - placed beans:", placed);
+    
+    if (placed === 13) {
+      console.log("SHOWING TEMP STATUS: 13 beans reached!");
+      setTempStatusMessage('You have 13 jellybeans! Click "Finish Round" to move on.');
+      
+      // Clear message after 3 seconds
+      const timer = setTimeout(() => {
+        console.log("Clearing temp status after 3 seconds");
+        setTempStatusMessage("");
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    } else {
+      console.log("Clearing temp status - not at 13 beans");
+      setTempStatusMessage("");
     }
-  }, [boardState, currentRound, gameStarted]);
+  } else {
+    console.log("Clearing temp status - not in Round 2 or game not started");
+    setTempStatusMessage("");
+  }
+}, [boardState, currentRound, gameStarted]);
 
-  // Alert when Round 3 reaches exactly 10 beans (no insurance condition)
+  // Temporary status when Round 3 reaches exactly 10 beans (no insurance)
   useEffect(() => {
     if (currentRound === 3 && gameStarted && !hasHealthInsurance()) {
       const placed = calculateTotalPlaced();
+
       if (placed === 10) {
+        setTempStatusMessage(
+          'You have 10 jellybeans! Click "Finish Round" to move on.'
+        );
+
+        // Clear message after 3 seconds
         const timer = setTimeout(() => {
-          showGameAlert(
-            'You have 10 jellybeans. Click "Finish Round" to move on.'
-          );
-        }, 100);
+          setTempStatusMessage("");
+        }, 3000);
+
         return () => clearTimeout(timer);
+      } else {
+        // Clear message if count changes
+        setTempStatusMessage("");
       }
+    } else {
+      setTempStatusMessage(""); // Clear when not in Round 3 without insurance
     }
   }, [boardState, currentRound, gameStarted]);
 
@@ -145,11 +184,15 @@ function App() {
       const timer = setTimeout(() => {
         if (hasHealthInsurance()) {
           showGameAlert(
-            "Round 3: Someone in your family broke their leg. ☹️\nLuckily, you have health insurance!\nClick 'OK' to continue to Round 4."
+            "Round 3: Someone in your family broke their leg. ☹️\nLuckily, you have health insurance!\nClick 'OK' to continue to Round 4.",
+            "Things to Think About",
+            ROUNDS[3].sectionContent
           );
         } else {
           showGameAlert(
-            "Round 3: Someone in your family broke their leg. ☹️\nYou do not have insurance; remove 3 jellybeans."
+            "Round 3: Someone in your family broke their leg. ☹️\nYou do not have insurance; remove 3 jellybeans.",
+            "Things to Think About",
+            ROUNDS[3].sectionContent
           );
         }
       }, 100);
@@ -370,9 +413,16 @@ function App() {
 
     if (currentRound === 1) {
       setCurrentRound(2);
-      showGameAlert(ROUNDS[2].message);
+      // Show Round 1 discussion questions and Round 2 instructions
+      showGameAlert(
+        ROUNDS[2].message,
+        ROUNDS[2].sectionTitle,
+        ROUNDS[2].sectionContent
+      );
     } else if (currentRound === 2) {
       setCurrentRound(3);
+      // Round 2 discussion questions being handled in useEffect)
+      //  showGameAlert(null, ROUNDS[3].sectionTitle, ROUNDS[3].sectionContent);
     } else if (currentRound === 3) {
       // Only gets here if user doesn't have insurance
       // (With insurance, specialAction handles advancement)
@@ -382,7 +432,7 @@ function App() {
       );
     } else if (currentRound === 4) {
       showGameAlert(
-        "Congratulations! You have completed the game by successfully budgeting through life's ups and downs!"
+        "Congratulations! You have completed the game by successfully budgeting through life's ups and downs!\nClick OK to play again."
       );
     }
   };
@@ -391,7 +441,12 @@ function App() {
   const handleBeanClick = (itemId, squareIndex) => {
     if (!gameStarted) {
       setGameStarted(true);
-      showGameAlert(ROUNDS[1].message);
+      // Show game start instructions with discussion questions
+      showGameAlert(
+        ROUNDS[1].message,
+        ROUNDS[1].sectionTitle,
+        ROUNDS[1].sectionContent
+      );
     }
 
     const item = boardState[itemId];
@@ -518,7 +573,12 @@ function App() {
     console.log("Game started via button");
     if (!gameStarted) {
       setGameStarted(true);
-      showGameAlert(ROUNDS[1].message);
+      // Show game start instructions with discussion questions
+      showGameAlert(
+        ROUNDS[1].message,
+        ROUNDS[1].sectionTitle,
+        ROUNDS[1].sectionContent
+      );
     }
   };
 
@@ -529,6 +589,7 @@ function App() {
         currentRound={currentRound}
         gameStarted={gameStarted}
         onStartGame={handleStartGame}
+        tempStatusMessage={tempStatusMessage}
       />
 
       <main>
@@ -571,12 +632,14 @@ function App() {
 
       {showAlert && (
         <GameAlert
-          message={alertMessage}
+          message={alertData.message}
+          sectionTitle={alertData.sectionTitle}
+          sectionContent={alertData.sectionContent}
           onClose={() => setShowAlert(false)}
           specialAction={
             currentRound === 3 &&
             hasHealthInsurance() &&
-            alertMessage.includes("Luckily, you have health insurance")
+            alertData.message.includes("Luckily, you have health insurance")
               ? () => {
                   console.log(
                     "Advancing from Round 3 to Round 4 via special action"
@@ -588,8 +651,9 @@ function App() {
                     );
                   }, 300);
                 }
-              : currentRound === 4 && alertMessage.includes("Congratulations")
-              ? resetGame // This will reset the game when OK is clicked
+              : currentRound === 4 &&
+                alertData.message.includes("Congratulations")
+              ? resetGame
               : undefined
           }
         />

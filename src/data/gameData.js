@@ -201,6 +201,10 @@ export const ROUNDS = {
   1: {
     beans: 20,
     message: "Round 1: Spend all 20 jellybeans.",
+    sectionTitle: "Set your Budget",
+    sectionContent:
+      "• First, you should choose one item in each REQUIRED category\n" +
+      "• Once you have covered required categories, continue making decisions until you have spent all 20 jellybeans.",
     canAdd: true,
     canRemove: true,
   },
@@ -208,6 +212,10 @@ export const ROUNDS = {
     beans: 13,
     message:
       "Round 2: Your income has been cut to 13 jellybeans!\nRemove 7 jellybeans to continue.",
+    sectionTitle: "Things to Think About",
+    sectionContent:
+      "• Why did you choose what you did?\n" +
+      "• In what ways were you influenced by your values, goals, or experiences?",
     canAdd: true,
     canRemove: true,
   },
@@ -215,6 +223,10 @@ export const ROUNDS = {
     beans: 13,
     message:
       "Round 3: Someone in your family broke their leg. ☹️ If you do not have insurance, remove 3 jellybeans.",
+    sectionTitle: "Things to Think About",
+    sectionContent:
+      "• What did you choose to give up? Why?\n" +
+      "• What did you learn about yourself and money in this process?",
     canAdd: true,
     canRemove: true,
   },

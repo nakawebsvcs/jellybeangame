@@ -1,11 +1,16 @@
 import React, { useEffect } from "react";
 
-const GameAlert = ({ message, onClose, specialAction }) => {
+const GameAlert = ({
+  message,
+  onClose,
+  specialAction,
+  sectionTitle,
+  sectionContent,
+}) => {
   // Close on Escape key
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape") {
-        console.log("Escape pressed, closing alert");
         onClose();
       }
     };
@@ -18,12 +23,8 @@ const GameAlert = ({ message, onClose, specialAction }) => {
   }, [onClose]);
 
   const handleClose = () => {
-    console.log("Alert close button clicked");
-    console.log("specialAction exists?", !!specialAction);
     onClose();
-    // If there's a special action (like advancing to next round), execute it
     if (specialAction) {
-      console.log("Executing special action");
       specialAction();
     }
   };
@@ -31,9 +32,26 @@ const GameAlert = ({ message, onClose, specialAction }) => {
   return (
     <div id="alert-overlay" onClick={handleClose}>
       <div className="alert-content" onClick={(e) => e.stopPropagation()}>
-        <p id="alert-message" style={{ whiteSpace: "pre-line" }}>
-          {message}
-        </p>
+        {/* Section (discussion questions) - Shows at TOP */}
+        {sectionTitle && (
+          <div className="alert-section">
+            <h3 className="section-title">{sectionTitle}</h3>
+            <div className="section-content" style={{ whiteSpace: "pre-line" }}>
+              {sectionContent}
+            </div>
+          </div>
+        )}
+
+        {/* Divider if we have both sections and message */}
+        {sectionTitle && message && <hr className="section-divider" />}
+
+        {/* Main Message (round instructions) - Shows at BOTTOM */}
+        {message && (
+          <p id="alert-message" style={{ whiteSpace: "pre-line" }}>
+            {message}
+          </p>
+        )}
+
         <button
           className="alert-close-btn"
           onClick={handleClose}

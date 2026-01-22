@@ -74,7 +74,7 @@ h2 {
 
 #alert-message {
   color: red;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: bold;
   text-align: center;
   margin: 0 0 20px 0;
@@ -86,11 +86,11 @@ h2 {
 .alert-content {
   background-color: rgba(255, 255, 255, 0.98);
   border-radius: 15px;
-  border: 3px solid red;
-  box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+  border: 3px solid #9c7aa3;
+  box-shadow: 0 0 30px rgba(6, 6, 6, 0.3);
   padding: 30px;
-  max-width: 80%;
-  min-width: 300px;
+  max-width: 90%;
+  min-width: 400px;
   text-align: center;
   cursor: default; /* Don't change cursor inside content */
 }
@@ -117,11 +117,97 @@ h2 {
   transform: scale(0.95);
 }
 
+/* Alert Section Styling */
+.alert-section {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  color: #86678c;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  text-align: center;
+  font-family: "Kanit", sans-serif;
+}
+
+.section-content {
+  background: #f9f9f9;
+  color: black;
+  border-radius: 8px;
+  padding: 20px;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  border-left: 4px solid #9c7aa3;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.section-divider {
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #7a5f80, transparent);
+  margin: 25px 0;
+}
+
 #jellybean-counter {
     font-family: "Kanit", sans-serif;
     color: black;
     font-size: 1.8em;
     font-weight: bold;
+}
+
+ .temp-status-message {
+  position: fixed;
+  top: 90px;  /* Below the counter */
+  right: 20px;
+  background-color: white;
+  color: black;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  animation: slideIn 0.5s ease-out;
+  max-width: 300px;
+  text-align: center;
+  line-height: 1.4;
+  border: 2px solid #4caf50;
+} 
+
+
+.temp-status-message::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 30px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #4caf50;
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(-20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Optional: Add fade-out when disappearing */
+.temp-status-message.fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-10px); }
 }
 
 header {
@@ -381,12 +467,12 @@ footer {
   background-color: transparent; /* Important: remove the purple background */
 }
 
-/* Remove the old checkbox styling */
+/* Checkbox styling */
 input[type="checkbox"] {
   width: 20px;
   height: 20px;
   cursor: pointer;
-  accent-color: #4caf50; /* Keep this as fallback */
+  accent-color: #4caf50; 
 }
 
 /* Media Queries for Responsive Design */

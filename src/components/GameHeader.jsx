@@ -1,6 +1,13 @@
 import React from "react";
 
-const GameHeader = ({ jellybeans, currentRound, gameStarted, onStartGame }) => {
+const GameHeader = ({
+  jellybeans,
+  currentRound,
+  gameStarted,
+  onStartGame,
+  tempStatusMessage,
+}) => {
+  console.log("GameHeader render - tempStatusMessage:", tempStatusMessage);
   return (
     <header className="bg-white">
       <img
@@ -56,6 +63,11 @@ const GameHeader = ({ jellybeans, currentRound, gameStarted, onStartGame }) => {
               : `Jellybeans left: ${jellybeans}`}
           </div>
         </div>
+      )}
+
+      {/* Temporary status message - only shows when tempStatusMessage exists */}
+      {tempStatusMessage && gameStarted && (
+        <div className="temp-status-message">{tempStatusMessage}</div>
       )}
     </header>
   );
