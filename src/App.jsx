@@ -7,8 +7,6 @@ import GameAlert from "./components/GameAlert";
 import {
   CATEGORIES,
   ROUNDS,
-  REQUIRED_CATEGORIES,
-  getCategoryByItemId,
 } from "./data/gameData.js";
 
 console.log("CATEGORIES:", CATEGORIES);
@@ -707,7 +705,12 @@ function App() {
 
       <main>
         <GameBoard
-          categories={CATEGORIES}
+          categories={[...CATEGORIES].sort((a, b) => {
+            // Sort required categories first (required: true comes before false)
+            if (a.required && !b.required) return -1;
+            if (!a.required && b.required) return 1;
+            return 0;
+          })}
           boardState={boardState}
           onBeanClick={handleBeanClick}
           currentRound={currentRound}
@@ -756,7 +759,7 @@ function App() {
             alertData.message.includes("Luckily, you have health insurance")
               ? () => {
                   console.log(
-                    "Advancing from Round 3 to Round 4 via special action"
+                    "Advancing from Round 3 to Round 4 via special action",
                   );
                   //  setTempStatusMessage(""); // Clear temp status
                   setCurrentRound(4);
@@ -765,14 +768,14 @@ function App() {
                       "Final Round: You've received a raise of 2 jellybeans!\nSpend your beans wisely!",
                       "", // No section title
                       "", // No section content
-                      "instruction"
+                      "instruction",
                     );
                   }, 300);
                 }
               : currentRound === 4 &&
-                alertData.message.includes("Congratulations")
-              ? resetGame
-              : undefined
+                  alertData.message.includes("Congratulations")
+                ? resetGame
+                : undefined
           }
         />
       )}
